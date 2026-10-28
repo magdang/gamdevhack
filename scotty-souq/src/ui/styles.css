@@ -100,6 +100,7 @@
 .sq-button:active { transform: translateY(4px); }
 .sq-button small { font-size: 9px; letter-spacing: .1em; margin-top: 5px; }
 .sq-start { width: min(100%, 320px); animation: sq-pulse 1.7s ease-in-out infinite; }
+.sq-boss-skip { width: min(100%, 260px); padding: 10px 18px; min-height: 44px; font-size: 15px !important; background: #b8323f; color: #fff4cd; border-color: #ffd9a0; box-shadow: 0 5px 0 #5e1a2a, 0 9px 18px #20142e66; }
 .sq-controls { padding: 12px 16px; width: 100%; }
 .sq-controls strong { display: block; font-size: 13px; color: var(--sand); }
 .sq-controls small { display: block; font-size: 10px; margin-top: 7px; color: var(--lavender); line-height: 1.5; }
@@ -160,6 +161,7 @@
   .sq-controls strong { font-size: 10px; }
   .sq-controls small { font-size: 9px; margin-top: 3px; }
   .sq-start { padding: 11px 20px; min-height: 45px; font-size: 18px !important; }
+  .sq-boss-skip { padding: 8px 16px; min-height: 40px; font-size: 13px !important; }
   .sq-boss { top: calc(var(--safe-top) + 65px); }
   .sq-dash { width: 75px; height: 75px; }
   .sq-combo-number strong { font-size: 46px; }

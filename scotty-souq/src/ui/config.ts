@@ -14,6 +14,7 @@ export const UI = {
   strings: {
     scotty: 'SCOTTY', title: 'DEFEND SOUQ WAQIF', location: 'DOHA, QATAR',
     start: 'TAP TO START', startDesktop: 'CLICK OR PRESS ANY KEY',
+    skipToBoss: 'SKIP TO THE BOSS ⚔', skipToBossDesktop: 'OR PRESS B',
     controlsTouch: 'Drag to move · Swipe to dash · Auto-slash',
     controlsDesktop: 'WASD / arrows: move · Space / right-click: dash · Esc / P: pause',
     controlsHint: 'Keep the combo. Defend the souq.',

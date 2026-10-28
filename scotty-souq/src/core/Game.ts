@@ -24,6 +24,9 @@ import { Autoplay } from './testing/Autoplay';
 import { CoreOverlay } from './testing/CoreOverlay';
 import { createFakeEnemies } from './testing/FakeEnemies';
 
+/** Wave number the enemies kit treats as the Dean Trick boss fight. */
+const BOSS_WAVE = 6;
+
 export interface DebugGame {
   readonly state: GameState;
   readonly paused: boolean;
@@ -98,6 +101,8 @@ export class Game {
 
   /** True while beforePlay (e.g. the portal intro) runs between "tap to start" and wave 1. */
   private launching = false;
+  /** Wave the current run started at (?wave=N, or the boss via "skip to the boss"). */
+  private startWave = this.debug.wave ?? 1;
 
   constructor(private container: HTMLElement, uiRoot: HTMLElement, private options: GameOptions = {}) {
     this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
@@ -155,6 +160,11 @@ export class Game {
   private bindEvents(): void {
     this.off.push(
       this.events.on('ui:start', () => this.requestStart()),
+      this.events.on('ui:startBoss', () => {
+        // Straight to the Dean Trick fight: no intro. Restarts from this run return to the boss.
+        if (this.state !== 'title' || this.launching) return;
+        this.start(BOSS_WAVE);
+      }),
       this.events.on('ui:restart', () => this.restart()),
       this.events.on('ui:pause', () => this.setPaused(true)),
       this.events.on('ui:resume', () => this.setPaused(false)),
@@ -203,10 +213,12 @@ export class Game {
     });
   }
 
-  start(): void {
+  /** Start a run at `fromWave` (defaults to the wave of the previous run, so restarts repeat it). */
+  start(fromWave: number = this.startWave): void {
     if (this.state !== 'title') return;
     this.runSeconds = 0; this.time.reset(); this.input.reset(); this.setState('playing');
-    const wave = Math.max(1, Math.min(6, Math.trunc(this.debug.wave ?? 1)));
+    const wave = Math.max(1, Math.min(BOSS_WAVE, Math.trunc(fromWave)));
+    this.startWave = wave;
     this.wavesCleared = wave - 1; this.enemies.start(wave);
   }
 

@@ -21,6 +21,8 @@ export interface GameEvents {
   'ui:pause': Empty;
   'ui:resume': Empty;
   'ui:toggleMute': Empty;
+  /** Title "skip to the boss": no intro, start straight at the Dean Trick fight. */
+  'ui:startBoss': Empty;
 
   // ── player + combat (core)
   'player:hurt': { hp: number; maxHp: number; position: V3; from: V3 };

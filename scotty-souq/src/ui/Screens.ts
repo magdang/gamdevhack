@@ -30,6 +30,7 @@ export class Screens {
         <div class="sq-title-header"><span class="sq-location">✦ ${s.location} ✦</span>
           <h1><span>${s.scotty}</span><small>${s.title}</small></h1><p>${s.controlsHint}</p></div>
         <div class="sq-title-bottom"><button type="button" class="sq-button sq-start">${s.start}<small class="sq-desktop">${s.startDesktop}</small></button>
+          <button type="button" class="sq-button sq-boss-skip" data-boss>${s.skipToBoss}<small class="sq-desktop">${s.skipToBossDesktop}</small></button>
           <div class="sq-controls sq-plate"><strong>${s.controlsTouch}</strong><small>${s.controlsDesktop}</small></div>
           <span class="sq-personal-best">${s.best} <b data-title-best>0</b></span></div>
       </section>
@@ -56,6 +57,10 @@ export class Screens {
     art.onerror = () => { art.hidden = true; };
     art.src = ctx.assets.imageUrl('key_art');
     this.title.addEventListener('click', () => this.start());
+    find(this.title, '[data-boss]').addEventListener('click', (event) => {
+      event.stopPropagation();
+      this.startBoss();
+    });
     this.resume.addEventListener('click', () => ctx.events.emit('ui:resume', {}));
     this.restart.addEventListener('click', () => ctx.events.emit('ui:restart', {}));
     this.element.addEventListener('pointerdown', (event) => event.stopPropagation());
@@ -74,7 +79,10 @@ export class Screens {
       const target = event.target;
       if (target instanceof HTMLElement && target.closest('input, select, textarea, [data-demo-controls]')) return;
       event.preventDefault();
-      this.start();
+      const bossKey = event.key === 'b' || event.key === 'B';
+      const bossButton = target instanceof HTMLElement && target.closest('[data-boss]') && (event.key === 'Enter' || event.key === ' ');
+      if (bossKey || bossButton) this.startBoss();
+      else this.start();
     });
     ctx.events.on('game:state', ({ state }) => this.setState(state));
     ctx.events.on('game:paused', ({ paused }) => this.setPaused(paused));
@@ -87,6 +95,12 @@ export class Screens {
     if (this.state !== 'title' || this.startPending) return;
     this.startPending = true;
     this.ctx.events.emit('ui:start', {});
+  }
+
+  private startBoss(): void {
+    if (this.state !== 'title' || this.startPending) return;
+    this.startPending = true;
+    this.ctx.events.emit('ui:startBoss', {});
   }
   setState(state: GameState): void {
     if (this.state === state) return;
