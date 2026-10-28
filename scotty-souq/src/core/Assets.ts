@@ -14,6 +14,9 @@ export interface AssetsApi {
 }
 
 const BASE = import.meta.env.BASE_URL;
+// A missing generated model is normal during production. Avoid failed browser requests entirely.
+// Vite refreshes this inventory when a GLB arrives; the next build also picks it up automatically.
+const AVAILABLE_MODELS = import.meta.glob('/public/assets/gen/models/*.glb', { query: '?url', import: 'default', eager: true });
 
 export class Assets implements AssetsApi {
   private gltfLoader = new GLTFLoader();
@@ -22,6 +25,7 @@ export class Assets implements AssetsApi {
   private textureCache = new Map<TextureKey, Promise<THREE.Texture | null>>();
 
   async model(key: ModelKey): Promise<THREE.Object3D | null> {
+    if (!(`/public/${MODELS[key].path}` in AVAILABLE_MODELS)) return null;
     let pending = this.gltfCache.get(key);
     if (!pending) {
       pending = this.gltfLoader.loadAsync(BASE + MODELS[key].path).catch(() => {

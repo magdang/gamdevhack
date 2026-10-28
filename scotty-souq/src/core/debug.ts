@@ -16,5 +16,6 @@ export function parseDebugFlags(search = window.location.search): DebugFlags {
     fps: flag('fps'),
     mute: flag('mute'),
     autoplay: flag('autoplay'),
+    fake: flag('fake'),
   };
 }
