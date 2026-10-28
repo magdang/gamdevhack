@@ -221,9 +221,10 @@ export class AudioEngine implements AudioKit {
       this.lastSound.set(key, now);
       const source = context.createBufferSource();
       source.buffer = buffer;
-      source.playbackRate.value = 1 + this.ctx.rng.range(-C.pitchVariation, C.pitchVariation);
+      // Cosmetic jitter must not consume the shared seeded gameplay RNG.
+      source.playbackRate.value = 1 + (Math.random() * 2 - 1) * C.pitchVariation;
       const gain = context.createGain();
-      gain.gain.value = settings.volume * (1 + this.ctx.rng.range(-C.volumeVariation, C.volumeVariation));
+      gain.gain.value = settings.volume * (1 + (Math.random() * 2 - 1) * C.volumeVariation);
       source.connect(gain).connect(this.sfxGain);
       const voice = { source, gain };
       active.add(voice);
