@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#2a1b3d" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Scotty: Defend Souq Waqif</title>
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #2a1b3d; overscroll-behavior: none; }
+      body { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+      #app { position: fixed; inset: 0; }
+      #app canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+      #ui { position: absolute; inset: 0; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <div id="app"><div id="ui"></div></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

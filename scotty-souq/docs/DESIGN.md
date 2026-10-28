@@ -145,6 +145,23 @@ you may only (a) append new event types to `src/core/Events.ts`, (b) add keys to
 `src/core/config.ts`, (c) add manifest entries. Anything else you need from another owner: implement a
 minimal local adapter and list the request in your hand-off summary.
 
+### 8.1 Parallel workstreams (supersedes the single-config and file-ownership notes above)
+
+The binding interfaces are `src/core/contracts.ts` (kit interfaces) and `src/core/Events.ts` (event map).
+Each kit is created only through its factory (`createWorld`, `createFx`, `createEnemies`, `createUi`,
+`createAudio`) and keeps its own tunables in `src/<kit>/config.ts`.
+
+| Workstream | Owns |
+| --- | --- |
+| Core | `src/core/**` (except the append-only contracts), `src/player/**`, `src/combat/**`, `src/main.ts`, `index.html`, `scripts/**` |
+| Enemies | `src/enemies/**`, `src/waves/**`, `src/boss/**` |
+| World | `src/world/**` |
+| FX | `src/fx/**` |
+| UI + Audio | `src/ui/**`, `src/audio/**` |
+
+Each workstream also owns `demos/<name>.html` + `src/<kit>/demo.ts`, a standalone harness with fakes for
+the other kits. Concept art lives in `art/concepts/` (not shipped).
+
 ## 9. Assets and models
 
 - Generated GLBs are unrigged. Animate them procedurally: bob, squash/stretch, lean into movement, wind-up
