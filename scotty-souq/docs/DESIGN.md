@@ -93,16 +93,18 @@ A giant floating cartoon dean's face (~4 m tall, glasses, mortarboard) wielding 
 
 ## 7. Game flow
 
-**Boot: portal intro → 3D game.** `src/main.ts` first plays the portal intro (`src/intro/PortalIntro.ts`,
-owned by a teammate). It is the jam's 2D starter rebuilt on a canvas: Scotty strolls through Doha /
-Education City, a portal tears open, he is pulled in, and the screen flashes white. At peak white it calls
-`startGame(app, ui)`; the intro overlay then fades out over the 3D game and removes itself. Consequences:
-- `startGame(container, uiRoot)` keeps exactly this signature and must show a frame immediately (no
-  blocking loads — everything lazy-loads with fallbacks). The 3D game comes up in `title` under the fading
-  white flash, so the title screen should feel like "arriving in the souq".
-- `startGame` runs from a rAF callback, not a user gesture, so audio still unlocks on the next gesture
-  (the title's "tap to start").
-- `?intro=0` skips the intro. Every smoke test, demo and debug URL must include it.
+**Boot: title → portal intro → wave 1.** `src/main.ts` boots the 3D game straight into `title` (key art,
+"tap to start", controls). Tapping start runs `GameOptions.beforePlay`, which plays the portal intro
+(`src/intro/PortalIntro.ts`, owned by a teammate): the jam's 2D starter rebuilt on a canvas, where Scotty
+strolls through Doha / Education City, a portal tears open, he is pulled in, and the screen flashes white.
+At peak white the intro calls `begin()`, the game enters `playing` at wave 1, and the intro overlay fades
+out over the live fight. Consequences:
+- `startGame(container, uiRoot, options?)` must show a frame immediately (no blocking loads; everything
+  lazy-loads with fallbacks).
+- Audio unlocks on the title's "tap to start", so music and ambience already play during the intro.
+- Restart after game over or victory skips the intro and goes straight to wave 1.
+- `?intro=0` skips the intro (tap start goes straight to wave 1). Every smoke test, demo and debug URL
+  must include it.
 
 `title → playing(wave n) → bossIntro → bossFight → finalCut → victory` and `→ gameOver` from any combat
 state. Title screen shows key art, "Tap to start", and the controls. Game-over and victory screens show

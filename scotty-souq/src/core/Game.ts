@@ -96,7 +96,10 @@ export class Game {
     boss: null, finalCutReady: false, muted: false,
   };
 
-  constructor(private container: HTMLElement, uiRoot: HTMLElement) {
+  /** True while beforePlay (e.g. the portal intro) runs between "tap to start" and wave 1. */
+  private launching = false;
+
+  constructor(private container: HTMLElement, uiRoot: HTMLElement, private options: GameOptions = {}) {
     this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     this.renderer.shadowMap.enabled = true;
@@ -133,7 +136,7 @@ export class Game {
     window.addEventListener('pointerdown', this.unlock, { signal, capture: true });
     window.addEventListener('keydown', this.unlock, { signal, capture: true });
     this.renderer.domElement.addEventListener('pointerdown', (e) => {
-      if (this.state === 'title' && e.isPrimary && e.button === 0) this.start();
+      if (this.state === 'title' && e.isPrimary && e.button === 0) this.requestStart();
     }, { signal });
     document.addEventListener('visibilitychange', () => { if (document.hidden) this.setPaused(true); }, { signal });
     window.addEventListener('pagehide', () => this.setPaused(true), { signal });
@@ -151,7 +154,7 @@ export class Game {
 
   private bindEvents(): void {
     this.off.push(
-      this.events.on('ui:start', () => this.start()),
+      this.events.on('ui:start', () => this.requestStart()),
       this.events.on('ui:restart', () => this.restart()),
       this.events.on('ui:pause', () => this.setPaused(true)),
       this.events.on('ui:resume', () => this.setPaused(false)),
@@ -185,6 +188,21 @@ export class Game {
   }
   private unlock = (): void => { if (!this.unlocked) { this.unlocked = true; this.audio.unlock(); } };
 
+  /** Player asked to start from the title: run beforePlay (the portal intro) first, once. */
+  private requestStart(): void {
+    if (this.state !== 'title' || this.launching) return;
+    const beforePlay = this.options.beforePlay;
+    if (!beforePlay) {
+      this.start();
+      return;
+    }
+    this.launching = true;
+    beforePlay(() => {
+      this.launching = false;
+      this.start();
+    });
+  }
+
   start(): void {
     if (this.state !== 'title') return;
     this.runSeconds = 0; this.time.reset(); this.input.reset(); this.setState('playing');
@@ -197,7 +215,7 @@ export class Game {
     this.slash.reset(); this.dash.reset(); this.finisher.reset(); this.finalCut.reset();
     this.enemies.reset(); this.world.reset(); this.fx.reset(); this.ui.reset(); this.audio.reset?.();
     this.player.reset(); this.rig.reset(this.player.position); this.input.reset(); this.bot.reset(); this.combo.reset(); this.time.reset();
-    this.paused = false; this.deathLeft = this.runSeconds = this.wavesCleared = 0; this.pendingVictory = false;
+    this.paused = false; this.deathLeft = this.runSeconds = this.wavesCleared = 0; this.pendingVictory = false; this.launching = false;
     this.counters.hits = this.counters.kills = this.counters.dashes = this.counters.finishers = this.counters.finalCuts = 0;
     this.states.length = 0; this.events.emit('game:paused', { paused: false });
     this.setState('title'); this.start();
@@ -313,8 +331,14 @@ export class Game {
   }
 }
 
-export function startGame(container: HTMLElement, uiRoot: HTMLElement): Game {
-  const game = new Game(container, uiRoot);
+export interface GameOptions {
+  /** Runs when the player taps start on the title screen; call `begin` to drop into wave 1.
+   *  Restarts after game over skip it. */
+  beforePlay?: (begin: () => void) => void;
+}
+
+export function startGame(container: HTMLElement, uiRoot: HTMLElement, options?: GameOptions): Game {
+  const game = new Game(container, uiRoot, options);
   if (import.meta.hot) import.meta.hot.dispose(() => game.dispose());
   return game;
 }

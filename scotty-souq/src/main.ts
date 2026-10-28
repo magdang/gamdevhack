@@ -5,6 +5,6 @@ const app = document.getElementById('app');
 const ui = document.getElementById('ui');
 if (!app || !ui) throw new Error('missing #app / #ui');
 
-// 2D starter intro first; Scotty walks into a portal and the souq game starts behind the white flash.
-// Skip with ?intro=0.
-void playPortalIntro({ onEnterPortal: () => startGame(app, ui) });
+// Title screen first. "Tap to start" plays the 2D starter intro; walking through the portal drops Scotty
+// straight into wave 1 of the souq behind the white flash. Skip the intro with ?intro=0.
+startGame(app, ui, { beforePlay: (begin) => void playPortalIntro({ onEnterPortal: begin }) });
