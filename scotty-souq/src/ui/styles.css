@@ -98,7 +98,7 @@
 .sq-title-bottom { display: flex; flex-direction: column; gap: 14px; align-items: center; }
 .sq-button { position: relative; border: 2px solid #fff4cd; border-radius: 17px; background: var(--gold); padding: 15px 26px; color: var(--ink); font-size: 20px !important; font-weight: 1000 !important; letter-spacing: .025em; box-shadow: 0 6px 0 #9d513b, 0 10px 20px #20142e66; text-shadow: none; min-height: 52px; transition: transform .15s; }
 .sq-button:active { transform: translateY(4px); }
-.sq-button small { font-size: 9px; letter-spacing: .1em; margin-top: 5px; }
+.sq-button small { display: block; font-size: 9px; letter-spacing: .1em; margin-top: 5px; }
 .sq-start { width: min(100%, 320px); animation: sq-pulse 1.7s ease-in-out infinite; }
 .sq-boss-skip { width: min(100%, 260px); padding: 10px 18px; min-height: 44px; font-size: 15px !important; background: #b8323f; color: #fff4cd; border-color: #ffd9a0; box-shadow: 0 5px 0 #5e1a2a, 0 9px 18px #20142e66; }
 .sq-controls { padding: 12px 16px; width: 100%; }

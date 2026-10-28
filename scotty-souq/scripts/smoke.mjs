@@ -147,7 +147,9 @@ try {
     const { page, context } = await pageFor({ god: '1' }, true);
     await page.evaluate(() => window.__game.events.emit('ui:start', {}));
     const cdp = await context.newCDPSession(page);
-    const touch = (type, points) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: points });
+    // CDP waits for the page to handle each event, so slow headless frames stretch a gesture; stamp the
+    // swipe with its intended input times instead.
+    const touch = (type, points, timestamp) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: points, ...(timestamp ? { timestamp } : {}) });
     const p = (id, x, y) => ({ id, x, y, radiusX: 2, radiusY: 2, force: 1 });
     await touch('touchStart', [p(1, 80, 620)]);
     await touch('touchStart', [p(1, 80, 620), p(2, 300, 600)]);
@@ -158,9 +160,10 @@ try {
     assert.equal(await joystick.evaluate((el) => el.style.left), '10px', 'first finger keeps joystick origin');
     await touch('touchEnd', []);
     const before = await snapshot(page);
-    await touch('touchStart', [p(1, 80, 620)]);
-    await touch('touchMove', [p(1, 160, 540)]);
-    await touch('touchEnd', []);
+    const t0 = Date.now() / 1000;
+    await touch('touchStart', [p(1, 80, 620)], t0);
+    await touch('touchMove', [p(1, 160, 540)], t0 + 0.06);
+    await touch('touchEnd', [], t0 + 0.12);
     await page.waitForFunction(() => window.__game.counters.dashes > 0);
     await page.waitForTimeout(300);
     const result = await snapshot(page);

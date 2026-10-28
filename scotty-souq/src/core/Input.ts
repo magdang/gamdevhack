@@ -56,7 +56,7 @@ export class Input {
     e.preventDefault();
     this.pointer = e.pointerId;
     this.originX = e.clientX; this.originY = e.clientY;
-    this.downAt = performance.now();
+    this.downAt = e.timeStamp; // input time, not handler time: a slow frame must not turn a swipe into a drag
     this.dragX = this.dragY = this.farthest = 0;
     this.rememberCursor(e);
     this.canvas.setPointerCapture(e.pointerId);
@@ -90,7 +90,7 @@ export class Input {
     this.dragX = e.clientX - this.originX;
     this.dragY = e.clientY - this.originY;
     const distance = Math.hypot(this.dragX, this.dragY);
-    if (performance.now() - this.downAt <= CONFIG.input.swipeMs && distance >= CONFIG.input.swipePixels) {
+    if (e.timeStamp - this.downAt <= CONFIG.input.swipeMs && distance >= CONFIG.input.swipePixels) {
       this.screenDirection(this.dragX, this.dragY, this.dir).normalize();
       this.actions.dash(this.dir);
     } else if (this.farthest < 12 && distance < 12) this.actions.tap();
