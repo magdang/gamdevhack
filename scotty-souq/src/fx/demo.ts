@@ -41,6 +41,7 @@ sphere.position.set(0, 1.05, 0); scene.add(sphere);
 const modelParent = new THREE.Group(); modelParent.position.set(4.2, 0, 0); modelParent.rotation.y = -0.3;
 modelParent.scale.set(1.1, 1, 0.95); scene.add(modelParent);
 const model = new THREE.Group(); model.rotation.z = 0.07; modelParent.add(model);
+model.name = 'demo:loaded-model';
 function fallbackModel(): THREE.Group {
   const root = new THREE.Group();
   const torso = new THREE.Group(); torso.rotation.y = 0.3; root.add(torso);
