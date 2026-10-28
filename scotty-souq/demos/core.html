@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Scotty core combat harness</title>
+    <link rel="icon" href="data:," />
+    <style>
+      html,body { margin:0;height:100%;overflow:hidden;background:#2a1b3d;touch-action:none;overscroll-behavior:none;font-family:system-ui; }
+      #app { position:fixed;inset:0; } canvas { display:block;width:100%;height:100%; }
+      #ui { position:absolute;inset:0;pointer-events:none; }
+      nav { position:fixed;bottom:12px;right:12px;z-index:40;display:flex;gap:6px;flex-wrap:wrap;max-width:80vw; }
+      nav button,nav a { font:600 12px system-ui;color:#fff3cb;background:#342440;border:1px solid #ffe2a655;border-radius:8px;padding:8px;cursor:pointer;text-decoration:none; }
+    </style>
+  </head>
+  <body>
+    <div id="app"><div id="ui"></div></div>
+    <nav aria-label="Core harness controls">
+      <button data-intent="ui:start">Start</button><button data-intent="ui:restart">Restart</button>
+      <button data-intent="ui:pause">Pause</button><button data-intent="ui:resume">Resume</button>
+      <a href="?intro=0&amp;fake=1&amp;god=1&amp;wave=6&amp;autoplay=1">Bot vs boss</a>
+      <a href="?intro=0&amp;fake=1&amp;god=1&amp;autoplay=1">Bot waves</a>
+    </nav>
+    <script type="module">
+      const params = new URLSearchParams(location.search);
+      params.set('intro', '0'); params.set('fake', '1');
+      history.replaceState(null, '', `${location.pathname}?${params}`);
+      const { startGame } = await import('/src/core/Game.ts');
+      startGame(document.getElementById('app'), document.getElementById('ui'));
+      for (const button of document.querySelectorAll('[data-intent]')) {
+        button.addEventListener('click', () => window.__game.events.emit(button.dataset.intent, {}));
+      }
+    </script>
+  </body>
+</html>

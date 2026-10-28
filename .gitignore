@@ -3,3 +3,6 @@ __MACOSX/
 __pycache__/
 *.pyc
 .venv/
+.hf-jobs/
+node_modules/
+dist/
