@@ -36,6 +36,8 @@ export interface DebugFlags {
   mute: boolean;
   /** ?autoplay=1 — bot plays (smoke tests). */
   autoplay: boolean;
+  /** ?fake=1 uses core's isolated combat harness. */
+  fake?: boolean;
 }
 
 export interface GameClock {
@@ -239,6 +241,8 @@ export interface AudioKit {
   update(clock: GameClock): void;
   setMuted(muted: boolean): void;
   readonly muted: boolean;
+  /** Optional run reset, preserves the user's mute preference and unlocked audio context. */
+  reset?(): void;
 }
 
 export interface RunSummary {
