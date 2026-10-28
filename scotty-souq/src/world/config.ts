@@ -61,7 +61,7 @@ export const MOODS: Record<WorldMood, MoodPalette> = {
     ambientPower: 0.85, lantern: 1.8, fogDensity: 0.013, focus: 0 },
   finalCut: { zenith: 0x1c2039, middle: 0x54445f, horizon: 0xa4766e, fog: 0x655568,
     sun: 0xc6b4e1, sunPower: 0.30, ambient: 0xaaa6c7, ground: 0x29283b,
-    ambientPower: 0.42, lantern: 0.65, fogDensity: 0.018, focus: 150 },
+    ambientPower: 0.42, lantern: 0.65, fogDensity: 0.018, focus: 700 },
   victory: { zenith: 0x9b8dbe, middle: 0xf0b4bc, horizon: 0xffe1a5, fog: 0xf0c6a1,
     sun: 0xffdfaa, sunPower: 3.2, ambient: 0xffe8c8, ground: 0x8a7484,
     ambientPower: 1.9, lantern: 1.1, fogDensity: 0.008, focus: 0 },

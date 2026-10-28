@@ -97,7 +97,7 @@ export function createLighting(ctx: KitContext, root: THREE.Group, materials: Wo
     lanternLights.push(light);
     root.add(light);
   }
-  const focus = new THREE.SpotLight(0xffe4bb, 0, 28, 0.67, 0.8, 2);
+  const focus = new THREE.SpotLight(0xffe4bb, 0, 28, 0.55, 0.8, 2);
   focus.name = 'Final Cut action spotlight';
   focus.position.set(0, 13, 0);
   root.add(focus, focus.target);
