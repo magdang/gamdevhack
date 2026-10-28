@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#282130" />
+    <link rel="icon" href="data:," />
+    <title>Souq Waqif | World study</title>
+    <style>
+      * { box-sizing: border-box; }
+      html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #282130; }
+      body { color: #fff0d6; font: 13px/1.5 ui-sans-serif, system-ui, sans-serif; }
+      canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+      #overlay { position: fixed; inset: 0; pointer-events: none; padding: max(24px, env(safe-area-inset-top)) 28px; }
+      .heading { text-shadow: 0 2px 18px #282130aa; }
+      .eyebrow { margin: 0 0 6px; font-size: 10px; letter-spacing: .24em; text-transform: uppercase; }
+      h1 { margin: 0; font-family: Georgia, serif; font-size: clamp(28px, 4vw, 46px); font-weight: 400; line-height: 1.1; }
+      .subtitle { margin: 9px 0; opacity: .8; font-size: 12px; }
+      #stats { position: absolute; top: 26px; right: 28px; text-align: right; font: 10px/1.7 ui-monospace, monospace; opacity: .8; }
+      .controls { position: absolute; bottom: max(24px, env(safe-area-inset-bottom)); left: 28px; right: 28px; display: flex; gap: 12px; flex-wrap: wrap; align-items: end; }
+      .panel { pointer-events: auto; padding: 10px; border: 1px solid #f3d7b22b; border-radius: 10px; background: #2b2333d4; backdrop-filter: blur(12px); }
+      .label { margin: 0 4px 6px; text-transform: uppercase; letter-spacing: .15em; font-size: 9px; color: #c5afa0; }
+      .buttons { display: flex; gap: 5px; }
+      button { border: 1px solid #ffe5be26; border-radius: 5px; background: transparent; padding: 7px 9px; color: inherit; font: inherit; font-size: 11px; cursor: pointer; }
+      button:hover, button:focus-visible { background: #ffffff18; outline: 1px solid #f4d9a7; }
+      button[aria-pressed="true"] { color: #362b35; background: #f0cf99; border-color: #f0cf99; }
+      .hint { flex: 1; text-align: right; font-size: 10px; color: #fff0d6bf; text-shadow: 0 1px 8px #282130; }
+      .hint kbd { font: inherit; color: #fff0d6; }
+      @media (max-width: 650px) {
+        #overlay { padding: max(18px, env(safe-area-inset-top)) 16px; }
+        .controls { left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); gap: 7px; }
+        .panel { padding: 8px; }
+        .panel:first-child { width: 100%; }
+        .buttons { justify-content: space-between; }
+        button { padding: 7px 8px; }
+        #stats { top: 108px; right: 16px; font-size: 9px; }
+        .hint { display: none; }
+        .subtitle { max-width: 230px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="overlay">
+      <div class="heading">
+        <p class="eyebrow">Scotty / Environment study 01</p>
+        <h1>Evening in the souq.</h1>
+        <p class="subtitle">Souq Waqif, Doha. A little golden-hour calm before the final exam.</p>
+      </div>
+      <output id="stats" aria-label="Rendering statistics"></output>
+      <div class="controls">
+        <div class="panel">
+          <p class="label">Light &amp; atmosphere</p>
+          <div class="buttons" id="moods">
+            <button data-mood="title" aria-pressed="true">1 Golden</button>
+            <button data-mood="battle" aria-pressed="false">2 Battle</button>
+            <button data-mood="boss" aria-pressed="false">3 Boss</button>
+            <button data-mood="finalCut" aria-pressed="false">4 Final Cut</button>
+            <button data-mood="victory" aria-pressed="false">5 Victory</button>
+          </div>
+        </div>
+        <div class="panel">
+          <p class="label">Explore</p>
+          <div class="buttons">
+            <button data-view="gameplay" aria-pressed="true">G Play</button>
+            <button data-view="overview" aria-pressed="false">O Plaza</button>
+            <button data-view="flythrough" aria-pressed="false">F Fly</button>
+            <button id="breach">B Breach</button>
+            <button id="reset">R Reset</button>
+          </div>
+        </div>
+        <p class="hint">Drag to orbit · Scroll to zoom<br /><kbd>H</kbd> hide controls · <kbd>V</kbd> gate guides</p>
+      </div>
+    </div>
+    <script type="module" src="../src/world/demo.ts"></script>
+  </body>
+</html>
