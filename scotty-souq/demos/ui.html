@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#291c39" />
+    <link rel="icon" href="data:," />
+    <title>Scotty | UI and Audio Lab</title>
+    <style>
+      * { box-sizing: border-box; }
+      html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #291c39; }
+      body { font-family: system-ui, sans-serif; color: #fff0d0; }
+      #stage { position: fixed; inset: 0; overflow: hidden; background: radial-gradient(ellipse at 50% 35%, #d9b59a, #927a99 75%); }
+      #stage::before { content: ''; position: absolute; inset: 0; background: linear-gradient(#291c3944, #291c3977), var(--art) center / cover; opacity: .7; }
+      #stage::after { content: 'UI + AUDIO LAB'; position: absolute; top: 45%; left: 0; right: 0; text-align: center; color: #fff0d030; font-weight: 900; letter-spacing: .25em; font-size: clamp(20px, 5vw, 50px); }
+      #ui-root { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+      #lab { position: fixed; z-index: 10; bottom: max(5px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: min(470px, calc(100% - 20px)); font-size: 12px; pointer-events: none; }
+      #lab summary { pointer-events: auto; cursor: pointer; list-style: none; width: fit-content; margin: auto; padding: 7px 13px; border-radius: 9px; background: #291c39; border: 1px solid #dac2ff; box-shadow: 0 2px 8px #0005; font-weight: 800; }
+      #lab[open] { background: #291c39f5; border: 1px solid #dac2ff; border-radius: 14px; padding: 10px; pointer-events: auto; }
+      #lab[open] summary { margin-bottom: 10px; }
+      #lab-content { max-height: 58dvh; overflow: auto; overscroll-behavior: contain; }
+      #lab p { margin: 8px 0; color: #dac2ff; }
+      #lab label { display: grid; grid-template-columns: 86px 1fr 40px; gap: 9px; align-items: center; margin-bottom: 7px; }
+      #lab button, #lab select { font: inherit; color: #fff0d0; background: #564260; border: 1px solid #dac2ff66; border-radius: 7px; min-height: 32px; padding: 5px 9px; cursor: pointer; }
+      #lab button:focus-visible, #lab summary:focus-visible { outline: 2px solid #ffd267; outline-offset: 2px; }
+      #lab input { accent-color: #ffd267; width: 100%; }
+      .lab-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+      #event-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+      #status { display: block; margin-top: 10px; color: #ffd267; font-size: 11px; }
+      body[data-clean] #lab { display: none; }
+    </style>
+  </head>
+  <body>
+    <main id="stage"><div id="ui-root"></div></main>
+    <details id="lab" data-demo-controls>
+      <summary>UI / AUDIO LAB</summary>
+      <div id="lab-content">
+        <p>Close this panel to test gameplay overlays. Add ?intro=0&amp;clean=1 for a clean viewport.</p>
+        <div class="lab-row"><select id="state" aria-label="Game state"></select><button id="next-state">Next state</button><button id="pause">Pause / resume</button><button id="reset">Reset UI</button></div>
+        <div id="sliders"></div>
+        <div class="lab-row"><button id="boss">Boss on / off</button><button id="final-cut">Final Cut ready</button><button id="unlock">Unlock audio</button><button id="mute">Mute / unmute</button></div>
+        <p>Events, including every mapped sound:</p><div id="event-buttons"></div><output id="status" aria-live="polite">Ready</output>
+      </div>
+    </details>
+    <script type="module" src="../src/ui/demo.ts"></script>
+  </body>
+</html>
