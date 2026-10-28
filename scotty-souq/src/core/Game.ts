@@ -145,7 +145,7 @@ export class Game {
       this.fpsRoot.style.cssText = 'position:absolute;bottom:12px;left:12px;z-index:30;pointer-events:none;background:#17121dcc;color:#fff2c5;padding:6px 9px;font:12px monospace;';
       container.append(this.fpsRoot);
     }
-    this.exposeDebug(); this.setState('title');
+    this.exposeDebug(); this.setState('title'); this.frame(performance.now());
     this.renderer.setAnimationLoop(this.frame);
   }
 
@@ -313,4 +313,8 @@ export class Game {
   }
 }
 
-export function startGame(container: HTMLElement, uiRoot: HTMLElement): Game { return new Game(container, uiRoot); }
+export function startGame(container: HTMLElement, uiRoot: HTMLElement): Game {
+  const game = new Game(container, uiRoot);
+  if (import.meta.hot) import.meta.hot.dispose(() => game.dispose());
+  return game;
+}
