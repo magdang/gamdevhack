@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#33233b" />
+    <link rel="icon" href="data:," />
+    <title>Scotty | Enemies Lab</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; overflow: hidden; font: 14px/1.45 system-ui, sans-serif; color: #fff6e9; background: #33233b; }
+      canvas { display: block; width: 100vw; height: 100vh; }
+      #panel { position: absolute; top: 16px; left: 16px; width: min(330px, calc(100vw - 32px)); padding: 18px; background: #30213be8; border: 1px solid #ffd39155; border-radius: 14px; pointer-events: none; }
+      h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: .03em; }
+      .eyebrow { color: #ffd391; font-size: 11px; letter-spacing: .16em; margin: 0 0 5px; }
+      #hud { font-size: 15px; color: #ffd391; margin: 12px 0; font-variant-numeric: tabular-nums; }
+      #status { min-height: 42px; color: #fff; font-weight: 700; }
+      .help { color: #d6cbdc; font-size: 12px; }
+      #log { color: #c7b1cd; font: 11px/1.5 ui-monospace, monospace; margin-top: 12px; }
+      #actions { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0; pointer-events: auto; }
+      button { border: 1px solid #ffd39166; border-radius: 6px; color: #fff6e9; background: #60465e; padding: 5px 9px; cursor: pointer; }
+      #badge { position: absolute; right: 16px; bottom: 14px; color: #39273b; font-size: 12px; font-weight: 700; }
+      @media (max-width: 600px) { #panel { padding: 12px; font-size: 12px; } .help { font-size: 10px; } h1 { font-size: 18px; } }
+    </style>
+  </head>
+  <body>
+    <aside id="panel">
+      <p class="eyebrow">SCOTTY: DEFEND SOUQ WAQIF</p>
+      <h1>ENEMIES LAB</h1>
+      <div id="hud"></div>
+      <div id="status">Defend the plaza. Dodge the filling red shapes.</div>
+      <div id="actions">
+        <button data-key="1">Wave 1</button><button data-key="3">Wave 3</button><button data-key="5">Wave 5</button><button data-key="6">Boss</button>
+        <button data-key="j">Hit</button><button data-key=" ">Dash cut</button><button data-key="f">Final Cut</button>
+      </div>
+      <div class="help">WASD / arrows move · J hits nearest · K heavy hit<br />Space dash-cuts · F Final Cut · 1-6 jump to wave<br />P freeze · T slow time · G god mode · R restart<br />GLBs by default. Add ?fallback=1 to inspect primitive mascots.</div>
+      <div id="log"></div>
+    </aside>
+    <div id="badge">Six gates · fixed telegraphs · three attack tokens</div>
+    <script type="module" src="/src/enemies/demo.ts"></script>
+  </body>
+</html>
